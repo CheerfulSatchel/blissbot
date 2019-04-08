@@ -35,6 +35,10 @@ def handle_bot_commands(user_id, message):
                                 text=text,
                                 as_user=True
                         )
+        
+        elif message.lower() == 'random':
+                # TODO: make API call to retrieve un-read news article
+                print('Retrieving a new story for {}...'.format(user_id))
 
 
 def send_welcome_message():
