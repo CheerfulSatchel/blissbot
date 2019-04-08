@@ -82,11 +82,10 @@ if __name__ == '__main__':
 
         # print('Sending welcome messages :-)')
         # send_welcome_message()
-
-        if SLACK_BOT_CLIENT.rtm_connect():
-            while True:
-                parse_bot_commands(SLACK_BOT_CLIENT.rtm_read())
-                time.sleep(constants.RTM_READ_DELAY_SECONDS)
+        
+        while True:
+            parse_bot_commands(SLACK_BOT_CLIENT.rtm_read())
+            time.sleep(constants.RTM_READ_DELAY_SECONDS)
 
     else:
-        printß("Connection failed :-(")
+        print("Connection failed :-(")
