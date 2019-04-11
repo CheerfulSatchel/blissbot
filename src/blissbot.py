@@ -3,6 +3,7 @@ import time
 import re
 import requests
 import constants
+import json
 from slackclient import SlackClient
 
 SLACK_BOT_CLIENT = SlackClient(os.environ.get('SLACK_BOT_ACCESS_TOKEN'))
@@ -10,35 +11,53 @@ WORKSPACE_USERS = []
 
 BLISSBOT_ID = None
 
+BLOCK_COMMANDS = ['help']
+
+MESSAGE_COMMANDS = ['random']
+
 def parse_bot_commands(slack_events):
     for event in slack_events:
         if event['type'] == 'message' and not 'subtype' in event:
-            user_id = event['user']
+            channel_id = event['channel']
+            print('CHANNEL IS: {}'.format(channel_id))
             message = event['text']
-            handle_bot_commands(user_id, message)
+            handle_bot_commands(channel_id, message)
 
 
-def generate_message(constant_key, replacement_str):
-    message_template = constants.MESSAGE_TEMPLATES[constant_key]
-    # Based on https://stackoverflow.com/questions/5658369/how-to-input-a-regex-in-string-replace
-    message = re.sub(r'<\w+>', replacement_str, message_template)
+def generate_message(key, replacement_str):
+    with open('src/messages/{}.json'.format(key)) as json_file:
+        data = json.load(json_file)
+        data['text'] = replacement_str
+        return data
 
-    return message
+def generate_blocks(key):
+    with open('src/blocks/{}.json'.format(key)) as json_file:
+        data = json.load(json_file)
+        return data
 
+def handle_bot_commands(channel_id, message):
+    lowercased_message = message.lower()
 
-def handle_bot_commands(user_id, message):
-    reply_text = ''
-    if message.lower() == 'help':
-        reply_text = generate_message('HELP_MESSAGE', user_id)
+    api_call_args = { 
+                        'channel': channel_id,
+                        'attachments': None,
+                        'text': None,
+                        'blocks': None,
+                        'unfurl_links': True
+                    }
 
-    elif message.lower() == 'random':
-        # TODO: make API call to retrieve un-read news article
-        print('Retrieving a new story for {}...'.format(user_id))
+    if lowercased_message in BLOCK_COMMANDS:
+        api_call_args['blocks'] = generate_blocks(lowercased_message)
+
+    elif lowercased_message in MESSAGE_COMMANDS:
+        print('Retrieving a new story for {}...'.format(channel_id))
         flask_response = requests.get(constants.API_BASE_ENDPOINT + 'random-story/', timeout=constants.API_TIMEOUT_MILLISECONDS)
         if '20' in str(flask_response.status_code):
             flask_response_json = flask_response.json()
             if flask_response_json['ok']:
-                reply_text = flask_response_json['body']['link']
+                api_call_args['attachments'] = generate_message(lowercased_message, flask_response_json['body']['link'])['attachments']
+                api_call_args['text'] = generate_message(lowercased_message, flask_response_json['body']['link'])['text']
+
         else:
             # TODO: Provide an error message for the user
             print('Nooose')
@@ -48,16 +67,12 @@ def handle_bot_commands(user_id, message):
         flask_response = requests.get(constants.API_BASE_ENDPOINT + 'example/', timeout=constants.API_TIMEOUT_MILLISECONDS)
         print(flask_response.json())
 
-    if reply_text:
-        response = SLACK_BOT_CLIENT.api_call(
-                'chat.postMessage',
-                channel=user_id,
-                text=reply_text,
-                as_user=True
-            )
-    else:
-        # TODO: Send error reply
-        return
+    response = SLACK_BOT_CLIENT.api_call(
+            'chat.postMessage',
+            **api_call_args
+        )
+    
+   # TODO: Handle response code :-)
 
 def send_welcome_message():
     workspace_users_response = SLACK_BOT_CLIENT.api_call('users.list')
