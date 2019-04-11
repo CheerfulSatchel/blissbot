@@ -1,0 +1,39 @@
+{
+  "text": "<happy-url-here>",
+  "attachments": [
+      {
+          "text": "Additional options :smile:",
+          "fallback": "Additional options available :disappointed:",
+          "callback_id": "additional_options",
+          "color": "#3498db",
+          "attachment_type": "default",
+          "actions": [
+              {
+                  "name": "save",
+                  "text": "Save",
+                  "type": "button",
+                  "value": "save"
+              },
+              {
+                  "name": "share",
+                  "text": "Share",
+                  "type": "button",
+                  "value": "share",
+        "confirm": {
+                      "title": "Who would you like to share this with?",
+                      "text": "Share the great news!",
+                      "ok_text": "Yes",
+                      "dismiss_text": "No"
+                  }
+              },
+              {
+                  "name": "cancel",
+                  "text": "Cancel",
+                  "style": "danger",
+                  "type": "button",
+                  "value": "cancel"
+              }
+          ]
+      }
+  ]
+}
