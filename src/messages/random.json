@@ -1,6 +1,12 @@
 {
-  "text": "<happy-url-here>",
+  "text": "Here you go! :smile:",
   "attachments": [
+      {
+          "title": "<article-title>",
+          "title_link": "<article-title-link>",
+          "image_url": "<article-image-url>",
+          "color": "#764FA5" 
+      },
       {
           "text": "Additional options :smile:",
           "fallback": "Additional options available :disappointed:",
