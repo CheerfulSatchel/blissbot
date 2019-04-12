@@ -33,6 +33,7 @@ def generate_message(key, data):
         article_fields['title'] = data['title']
         article_fields['title_link'] = data['title_link']
         article_fields['image_url'] = data['image_url']
+        article_fields['text'] = data['meta_content']
 
         attachments.insert(0, article_fields)
 

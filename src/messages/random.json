@@ -5,6 +5,7 @@
           "title": "<article-title>",
           "title_link": "<article-title-link>",
           "image_url": "<article-image-url>",
+          "text": "<article-meta-content>",
           "color": "#764FA5" 
       },
       {
