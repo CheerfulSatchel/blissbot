@@ -23,12 +23,20 @@ def parse_bot_commands(slack_events):
             message = event['text']
             handle_bot_commands(channel_id, message)
 
-
-def generate_message(key, replacement_str):
+def generate_message(key, data):
     with open('src/messages/{}.json'.format(key)) as json_file:
-        data = json.load(json_file)
-        data['text'] = replacement_str
-        return data
+        message_template = json.load(json_file)
+
+        attachments = message_template['attachments']        
+        article_fields = attachments.pop(0)
+
+        article_fields['title'] = data['title']
+        article_fields['title_link'] = data['title_link']
+        article_fields['image_url'] = data['image_url']
+
+        attachments.insert(0, article_fields)
+
+        return message_template
 
 def generate_blocks(key):
     with open('src/blocks/{}.json'.format(key)) as json_file:
@@ -38,38 +46,37 @@ def generate_blocks(key):
 def handle_bot_commands(channel_id, message):
     lowercased_message = message.lower()
 
-    api_call_args = { 
-                        'channel': channel_id,
-                        'attachments': None,
-                        'text': None,
-                        'blocks': None,
-                        'unfurl_links': True
-                    }
+    post_message_api_call_args = { 
+        'channel': channel_id,
+        'attachments': None,
+        'text': None,
+        'blocks': None
+    }
 
     if lowercased_message in BLOCK_COMMANDS:
-        api_call_args['blocks'] = generate_blocks(lowercased_message)
+        post_message_api_call_args['blocks'] = generate_blocks(lowercased_message)
 
     elif lowercased_message in MESSAGE_COMMANDS:
         print('Retrieving a new story for {}...'.format(channel_id))
-        flask_response = requests.get(constants.API_BASE_ENDPOINT + 'random-story/', timeout=constants.API_TIMEOUT_MILLISECONDS)
+        print(constants.API_BASE_ENDPOINT + 'random/')
+        flask_response = requests.get(constants.API_BASE_ENDPOINT + 'random/', timeout=constants.API_TIMEOUT_SECONDS)
+        print(flask_response)
         if '20' in str(flask_response.status_code):
             flask_response_json = flask_response.json()
+            print(flask_response_json)
             if flask_response_json['ok']:
-                api_call_args['attachments'] = generate_message(lowercased_message, flask_response_json['body']['link'])['attachments']
-                api_call_args['text'] = generate_message(lowercased_message, flask_response_json['body']['link'])['text']
-
-        else:
-            # TODO: Provide an error message for the user
-            print('Nooose')
+                generated_message = generate_message(lowercased_message,flask_response_json['body'])
+                post_message_api_call_args['attachments'] = generated_message['attachments']
+                post_message_api_call_args['text'] = generated_message['text']
     
     elif message.lower() == 'example':
         print('Just an example call...')
         flask_response = requests.get(constants.API_BASE_ENDPOINT + 'example/', timeout=constants.API_TIMEOUT_MILLISECONDS)
         print(flask_response.json())
 
-    response = SLACK_BOT_CLIENT.api_call(
+    post_message_response = SLACK_BOT_CLIENT.api_call(
             'chat.postMessage',
-            **api_call_args
+            **post_message_api_call_args
         )
     
    # TODO: Handle response code :-)
