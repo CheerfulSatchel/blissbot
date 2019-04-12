@@ -9,7 +9,7 @@
           "color": "#764FA5" 
       },
       {
-          "text": "Additional options :smile:",
+          "text": "",
           "fallback": "Additional options available :disappointed:",
           "callback_id": "additional_options",
           "color": "#3498db",
