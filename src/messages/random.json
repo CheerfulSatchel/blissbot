@@ -11,31 +11,21 @@
       {
           "text": "",
           "fallback": "Additional options available :disappointed:",
-          "callback_id": "additional_options",
+          "callback_id": "share_selection",
           "color": "#3498db",
           "attachment_type": "default",
           "actions": [
-              {
-                  "name": "save",
-                  "text": "Save",
-                  "type": "button",
-                  "value": "save"
-              },
               {
                   "name": "conversations_list",
                   "text": "Share with...",
                   "type": "select",
                   "data_source": "conversations",
                   "confirm": {
-                      "title": "Share"
+                      "title": "Share the good news with <entity>?",
+                      "text": "You'll brighten their day!",
+                      "ok_text": "Yes, please!",
+                      "dismiss_text": "No, thank you."
                   }
-              },
-              {
-                  "name": "cancel",
-                  "text": "Cancel",
-                  "style": "danger",
-                  "type": "button",
-                  "value": "cancel"
               }
           ]
       }
