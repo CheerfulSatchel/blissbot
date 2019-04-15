@@ -1,0 +1,9 @@
+[
+	{
+		"type": "section",
+		"text": {
+			"type": "mrkdwn",
+			"text": "Hello, there! My name is Blissbot, and I am here to serve you positive news articles!"
+		}
+	}
+]
