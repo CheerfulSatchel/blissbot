@@ -19,10 +19,10 @@
 	{
 		"type": "context",
 		"elements": [
-            {
+			{
 				"type": "mrkdwn",
-				"text": "Serves you a random postitive news article! 📰"
-        	}
+				"text": "Serves you a random positive news article! 📰"
+			}
 		]
 	},
 	{
