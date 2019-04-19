@@ -1,33 +1,33 @@
 {
-  "text": "Here you go! :smile:",
-  "attachments": [
-      {
-          "title": "<article-title>",
-          "title_link": "<article-title-link>",
-          "image_url": "<article-image-url>",
-          "text": "<article-meta-content>",
-          "color": "#764FA5" 
-      },
-      {
-          "text": "",
-          "fallback": "Additional options available :disappointed:",
-          "callback_id": "share_selection",
-          "color": "#3498db",
-          "attachment_type": "default",
-          "actions": [
-              {
-                  "name": "conversations_list",
-                  "text": "Share with...",
-                  "type": "select",
-                  "data_source": "conversations",
-                  "confirm": {
-                      "title": "Share the good news with <entity>?",
-                      "text": "You'll brighten their day!",
-                      "ok_text": "Yes, please!",
-                      "dismiss_text": "No, thank you."
-                  }
-              }
-          ]
-      }
-  ]
+    "text": "Here you go! :smile:",
+    "attachments": [
+        {
+            "title": "<article-title>",
+            "title_link": "<article-title-link>",
+            "image_url": "<article-image-url>",
+            "text": "<article-meta-content>",
+            "color": "#764FA5"
+        },
+        {
+            "text": "",
+            "fallback": "Additional options available :disappointed:",
+            "callback_id": "share_selection",
+            "color": "#3498db",
+            "attachment_type": "default",
+            "actions": [
+                {
+                    "name": "conversations_list",
+                    "text": "Share with...",
+                    "type": "select",
+                    "data_source": "conversations",
+                    "confirm": {
+                        "title": "Share the good news?",
+                        "text": "You'll brighten their day!",
+                        "ok_text": "Yes, please!",
+                        "dismiss_text": "No, thank you."
+                    }
+                }
+            ]
+        }
+    ]
 }
