@@ -5,5 +5,50 @@
 			"type": "mrkdwn",
 			"text": "Hello, there! My name is Blissbot, and I am here to serve you positive news articles!"
 		}
+	},
+	{
+		"type": "section",
+		"text": {
+			"type": "mrkdwn",
+			"text": "The following commands are available for Blissbot! (All commands are case-insensitive :smile:)"
+		}
+	},
+	{
+		"type": "divider"
+	},
+	{
+		"type": "section",
+		"text": {
+			"type": "mrkdwn",
+			"text": "*random*"
+		}
+	},
+	{
+		"type": "context",
+		"elements": [
+			{
+				"type": "mrkdwn",
+				"text": "Serves you a random positive news article! 📰"
+			}
+		]
+	},
+	{
+		"type": "divider"
+	},
+	{
+		"type": "section",
+		"text": {
+			"type": "mrkdwn",
+			"text": "*help*"
+		}
+	},
+	{
+		"type": "context",
+		"elements": [
+			{
+				"type": "mrkdwn",
+				"text": "You're reading the help page right now! Heehee~"
+			}
+		]
 	}
 ]
