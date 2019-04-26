@@ -75,27 +75,23 @@ def handle_bot_commands(channel_id, message):
                 post_message_api_call_args['text'] = generated_message['text']
 
     elif message.lower() == 'example':
-        print('Just an example call...')
         flask_response = requests.get(
             constants.API_BASE_ENDPOINT + 'example/', timeout=constants.API_TIMEOUT_MILLISECONDS)
-        print(flask_response.json())
 
-    print(post_message_api_call_args)
-    post_message_response = SLACK_BOT_CLIENT.api_call(
-        'chat.postMessage',
-        **post_message_api_call_args
-    )
+    response = requests.post(
+        constants.API_BASE_ENDPOINT + 'post-message/', data=json.dumps(post_message_api_call_args), timeout=constants.API_TIMEOUT_SECONDS, headers=constants.HEADERS)
 
-    print(post_message_response)
-   # TODO: Handle response code :-)
+    response_json = response.json()
+
+    if response_json['ok']:
+        print('LEGGO')
+    else:
+        print('Oh noseee')
 
 
 if __name__ == '__main__':
     if SLACK_BOT_CLIENT.rtm_connect(with_team_state=False):
         print('Connected to Bliss Bot!')
-
-        # print('Sending welcome messages :-)')
-        # send_welcome_message()
 
         while True:
             parse_bot_commands(SLACK_BOT_CLIENT.rtm_read())
