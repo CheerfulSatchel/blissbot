@@ -1,6 +1,6 @@
 ## Blissbot
 
-https://travis-ci.org/theAmbientOrange/blissbot.svg?branch=master
+[![Build Status](https://travis-ci.org/theAmbientOrange/blissbot.svg?branch=master)](https://travis-ci.org/theAmbientOrange/blissbot)
 
 Greetings, reader! I hope you are doing well.
 
