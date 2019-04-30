@@ -1,3 +1,4 @@
 slackclient
 requests
 mockito
+pytest
